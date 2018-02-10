@@ -7,8 +7,13 @@ class Blog extends Component {
         super(props);
         this.state = {
             blogs : [],
-            showAdd : false
-        }
+            showAdd : false,
+            curentPage : 1,
+            itemPerPage : 3,
+            activeNext :true,
+            activeprev : false
+        };
+        this.handleClick = this.handleClick.bind(this);
     }
     componentDidMount(){
         blogService.getAllBlogs().then(data=>{
@@ -40,11 +45,47 @@ class Blog extends Component {
             }
         })
     }
+    handleClick(event) {
+        let nbr = Number(event.target.id);
+        if(nbr>1){
+            this.setState({
+                curentPage: Number(event.target.id),
+                activeprev : true
+              });
+        }
+    }
+    next(){
+        if(this.state.curentPage===Math.ceil(this.state.blogs.length / this.state.itemPerPage)){
+            this.setState({activeNext:false});
+        }else{
+            this.setState({curentPage : this.state.curentPage+1,activeprev:true})
+        }
+    }
+    previous(){
+        if(this.state.curentPage===1){
+            this.setState({activeprev : false})     
+        }else{
+            this.setState({curentPage : this.state.curentPage-1, activeNext : true});
+        }
+    }
   render() {
-      var Items = this.state.blogs.map((item,i)=>{
+      var pageNumbers = [];
+      for(var i = 1;i<=Math.ceil(this.state.blogs.length / this.state.itemPerPage);i++){
+          pageNumbers.push(i);
+      }
+      var pagination = pageNumbers.map((item,i)=>{
           return(
+          <li className="page-item" key={i}><a className="btn btn-success" href="#" id={item} onClick={(e)=>this.handleClick(e)} >{item}</a></li>                
+          )
+      })
+      var offset = this.state.curentPage*this.state.itemPerPage;
+      var starset = (this.state.curentPage-1)*this.state.itemPerPage;
+      var Items = this.state.blogs.map((item,i)=>{
+        if(i>=starset && i<offset){ 
+        return(
               <BlogItems item={item} key={i}/>
           )
+        }
       })
     return (
         <div>
@@ -53,6 +94,22 @@ class Blog extends Component {
                 <div>
                     {Items}
                 </div>
+                <div className="position-fixed fixed-bottom">
+                <nav aria-label="Page navigation example">
+                    <ul className="pagination">
+                        {this.state.activeprev ?
+                        
+                        <li className="page-item"><a className="btn btn-success" href="#" onClick={(e)=>this.previous(e)}>Previous</a></li>:
+                        <li className="page-item"><a className="btn btn-success disabled" href="#" onClick={(e)=>this.previous(e)}>Previous</a></li>}
+                       
+                        {pagination}
+                        {this.state.activeNext ? 
+                        <li className="page-item"><a className="btn btn-success" href="#" onClick={(e)=>this.next(e)}>Next</a></li>:
+                        <li className="page-item"><a className="btn btn-success disabled" href="#" onClick={(e)=>this.next(e)}>Next</a></li>}
+                    </ul>
+                </nav>                
+                </div>
+
                 <div>
                     <button className="btn btn-danger btn-small" onClick={(e)=>{this.showBlogAdd(e)}}>ADD Blog</button>
                 </div>   
