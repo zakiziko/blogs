@@ -1,0 +1,42 @@
+{
+  "name": "mailtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon  app.js",
+    "build": "webpack -p --config ./webpack.config.js --progress",
+    "watch": "webpack -d --watch",
+    "prod": "nodemon  --exec babel-node app.js --ignore client/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "css-loader": "^0.28.9",
+    "es2015": "0.0.0",
+    "email-validator": "^1.1.1",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.1",
+    "lodash": "^4.17.5",
+    "mongoose": "^5.0.4",
+    "nodemailer": "^4.4.2",
+    "phone": "^2.0.0-rc.1",
+    "uglifyjs": "^2.4.11",
+    "uglifyjs-webpack-plugin": "^1.1.8"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.5",
+    "nodemon": "^1.14.11",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
