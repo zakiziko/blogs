@@ -18,25 +18,25 @@ module.exports = function(app){
                    user.password = hash;
                    user.save((err)=>{
                        if(err)
-                        return res.json({state:false,msg:'unvalid email !!'})
+                        return res.json({state:false,msg:'unvalid email !!'});
                         else
                         return res.json({state:true,user:user});
                    });
-                   
-               })
+
+               });
            });
         }else{
-            return res.json('Please Choose a Valid Email !!')
+            return res.json('Please Choose a Valid Email !!');
         }
-    })
+    });
     app.post('/auth',async function(req,res){
         const login = req.body.login;
         const pass = req.body.password;
         const user = await UserModule.userByLogin(login);
         const access = await UserModule.auth(user,pass);
-        return res.json(access);    
-        
-    })
+        return res.json(access);
+
+    });
     app.get('/profile/:token',(req,res)=>{
         let token = req.params.token;
         token = token.substring(4,token.length);
@@ -47,5 +47,5 @@ module.exports = function(app){
                  return res.json({state:true,user:decoded});
                 }
           });
-    })
-}
+    });
+};

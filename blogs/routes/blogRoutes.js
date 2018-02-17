@@ -24,11 +24,11 @@ module.exports = function(app){
         blogModule.find({}).populate('creator')
         .exec(function(err,blogs){
             if(err){
-                throw err
+                throw err;
             }else{
-                return res.json(blogs)
+                return res.json(blogs);
             }
-        })
-    })
+        });
+    });
 
-}
+};
